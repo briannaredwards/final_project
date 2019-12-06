@@ -6,8 +6,20 @@ L.tileLayer('https://api.mapbox.com/styles/v1/briannaedwards/ck2xhftpk0kxn1cnqgs
 }).addTo(mymap);
 
 
-  for ( let i = 0; i < places.length; i++ ) {
-  L.marker( [ places[i].latitude, places[i].longitude ] ).bindPopup(
+for ( let i = 0; i < places.length; i++ ) {
+    mymarker = new L.marker( [ places[i].latitude, places[i].longitude ] )
+    .addTo(mymap)
+    .on('click', writeData);
+    // store the array index in the marker title -
+    mymarker.title = i;
+}
+
+let content = document.querySelector('#content');
+
+// function runs when any marker is clicked
+function writeData(e) {
+    let i = e.target.title;
+    let htmlString =
     '<h2>' + places[i].placeName + '</h2>' +
     '<h3>' + places[i].islandFacts + '</h3>' +
     '<p>' + places[i].nationalFlower + '</p>' +
@@ -18,5 +30,6 @@ L.tileLayer('https://api.mapbox.com/styles/v1/briannaedwards/ck2xhftpk0kxn1cnqgs
     '<p>' + places[i].topAttraction2 + '</p>' +
     '<p>' + places[i].topAttraction3 + '</p>' +
     '<img src="' + places[i].image + '" alt="photo">' +
-    '<p><a href="' + places[i].url + '"> Source: </a>' + places[i].source + '</p>').addTo(mymap);
-  }
+    '<p><a href="' + places[i].url + '" target="_blank"> Source:</a> ' + places[i].source + '</p>';
+    content.innerHTML = htmlString;
+}
